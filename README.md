@@ -25,3 +25,4 @@ Open `/admin` to manage letters. Set a strong `ADMIN_PASSWORD` on the API server
 - Set `CORS_ORIGIN` on the API host to the exact frontend origin, for example `https://letters.example.com`.
 - Set the MySQL connection variables on the API host only. Do not expose database credentials as `VITE_` variables.
 - Run `server/schema.sql` against the hosted MySQL database before starting the API. If the host has already selected a database for you, remove the `CREATE DATABASE` and `USE Mooca` statements and run the remaining schema there.
+# ooca-letters
