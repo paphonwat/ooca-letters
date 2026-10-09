@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+body { @apply bg-ooca-gradient bg-no-repeat bg-fixed font-sans text-ooca-slate antialiased; }
+@media (prefers-reduced-motion: reduce) { .animate-marquee { animation: none; } }
