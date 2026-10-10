@@ -24,7 +24,7 @@ interface AdminLetterRow extends RowDataPacket {
 }
 
 const app = express();
-const port = Number(process.env.API_PORT ?? 3001);
+const port = Number(process.env.PORT ?? process.env.API_PORT ?? 3001);
 const sessionCookieName = 'mooca_admin';
 const sessionLifetimeMs = 8 * 60 * 60 * 1000;
 const adminSessions = new Map<string, number>();
@@ -38,6 +38,7 @@ const pool = mysql.createPool({
   user: process.env.MYSQL_USER ?? 'root',
   password: process.env.MYSQL_PASSWORD ?? '',
   database: process.env.MYSQL_DATABASE ?? 'Mooca',
+  ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: true } : undefined,
   charset: 'utf8mb4',
   waitForConnections: true,
   connectionLimit: 10,
@@ -46,6 +47,10 @@ const pool = mysql.createPool({
 app.use(cors({ origin: allowedOrigins.length ? allowedOrigins : false, credentials: true }));
 app.use(express.json({ limit: '12mb' }));
 app.use(cookieParser());
+
+app.get('/api/health', (_request, response) => {
+  response.json({ status: 'ok' });
+});
 
 const loginRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,

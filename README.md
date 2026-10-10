@@ -1,11 +1,6 @@
-# ooca letters
+# Ooca Letters
 
-npm create vite@latest ooca-letters -- --template react-ts
-cd ooca-letters
-npm i framer-motion lucide-react
-npm i -D tailwindcss@3 postcss autoprefixer && npx tailwindcss init -p
-
-Then copy these files over (tailwind.config.js, index.css -> src/index.css or adjust import in main.tsx, src/*).
+A bilingual letters app with a React frontend, Node.js API, and MySQL-compatible database.
 
 ## Run with MySQL
 
@@ -25,4 +20,14 @@ Open `/admin` to manage letters. Set a strong `ADMIN_PASSWORD` on the API server
 - Set `CORS_ORIGIN` on the API host to the exact frontend origin, for example `https://letters.example.com`.
 - Set the MySQL connection variables on the API host only. Do not expose database credentials as `VITE_` variables.
 - Run `server/schema.sql` against the hosted MySQL database before starting the API. If the host has already selected a database for you, remove the `CREATE DATABASE` and `USE Mooca` statements and run the remaining schema there.
-# ooca-letters
+
+### Free deployment with Render and TiDB Cloud
+
+The `render.yaml` Blueprint creates a free Render static site and a separate free Node.js API. Both services auto-deploy from the `main` branch when you push to GitHub. The API connects to TiDB Cloud Starter, which speaks the MySQL protocol.
+
+1. Create a TiDB Cloud Starter instance and note its host, port, exact prefixed username, password, and database name from the TiDB connection dialog. Do not put these values in GitHub.
+2. In Render, create a new Blueprint from `paphonwat/ooca-letters` and choose `render.yaml`. Enter the TiDB values and a strong `ADMIN_PASSWORD` when prompted.
+3. Run `server/schema.sql` against the TiDB database. Do not run `server/demo-letters.sql` in production; it adds demo-only rows.
+4. Confirm the service environment values `VITE_API_URL` and `CORS_ORIGIN` match the generated Render service URLs. If Render changes either hostname, update both values and redeploy.
+
+Render's free API sleeps after 15 minutes without traffic and can take about a minute to wake. TiDB's free quota is capped and may throttle requests when exhausted. This setup is suitable for a hobby or portfolio deployment, not an uptime-critical production service.

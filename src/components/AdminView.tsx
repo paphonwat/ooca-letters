@@ -16,7 +16,11 @@ interface Draft {
   fontSize: string;
 }
 
-const apiUrl = `${(import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '')}/api/admin`;
+const configuredApiOrigin = import.meta.env.VITE_API_URL ?? '';
+const apiOrigin = configuredApiOrigin
+  ? `${/^https?:\/\//i.test(configuredApiOrigin) ? '' : 'https://'}${configuredApiOrigin}`.replace(/\/$/, '')
+  : '';
+const apiUrl = `${apiOrigin}/api/admin`;
 const emptyDraft: Draft = { text: '', author: '', fontSize: '22' };
 const displayAuthor = (author: string) => !author || author === 'Unknow' ? 'บุคคลนิรนาม' : author;
 

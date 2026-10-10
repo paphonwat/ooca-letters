@@ -8,6 +8,8 @@
     "dev:web": "vite --host 0.0.0.0",
     "dev:api": "tsx watch server/index.ts",
     "build": "tsc -b && vite build",
+    "build:api": "tsc -p tsconfig.server.json",
+    "start:api": "node dist-api/index.js",
     "preview": "vite preview"
   },
   "dependencies": {

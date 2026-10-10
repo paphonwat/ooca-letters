@@ -11,7 +11,11 @@ import { dict } from './i18n';
 import { pickRandom } from './data';
 import type { Lang, Letter, View } from './types';
 
-const lettersApiUrl = `${(import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '')}/api/letters`;
+const configuredApiOrigin = import.meta.env.VITE_API_URL ?? '';
+const apiOrigin = configuredApiOrigin
+  ? `${/^https?:\/\//i.test(configuredApiOrigin) ? '' : 'https://'}${configuredApiOrigin}`.replace(/\/$/, '')
+  : '';
+const lettersApiUrl = `${apiOrigin}/api/letters`;
 
 export default function App() {
   const isAdminRoute = window.location.pathname === '/admin' || window.location.pathname === '/admin/';
