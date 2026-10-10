@@ -52,6 +52,22 @@ app.get('/api/health', (_request, response) => {
   response.json({ status: 'ok' });
 });
 
+app.get('/api/health/database', async (_request, response) => {
+  try {
+    const [rows] = await pool.query<(RowDataPacket & { count: number })[]>(
+      'SELECT COUNT(*) AS count FROM letters',
+    );
+    response.json({ status: 'ok', letterCount: Number(rows[0]?.count ?? 0) });
+  } catch (error) {
+    const code =
+      typeof error === 'object' && error !== null && 'code' in error && typeof error.code === 'string'
+        ? error.code
+        : 'UNKNOWN';
+    console.error('Database health check failed:', code);
+    response.status(503).json({ status: 'unavailable', code });
+  }
+});
+
 const loginRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 10,
